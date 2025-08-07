@@ -1,0 +1,140 @@
+const std = @import("std");
+const zcc = @import("compile_commands");
+const mem = std.mem;
+
+pub fn build(b: *std.Build) void {
+    const target = b.standardTargetOptions(.{});
+    const optimize = b.standardOptimizeOption(.{});
+    const use_wayland = b.option(bool, "use_wayland", "Use wayland instead of x11") orelse false;
+    const project_name = b.option([]const u8, "project", "The name of the project to build") orelse "01_hello_window";
+
+    const glfw = b.addStaticLibrary(.{
+        .name = "glfw",
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const glfw_include = "glfw-3.4/include";
+    glfw.addIncludePath(.{ .cwd_relative = glfw_include });
+
+    glfw.addCSourceFiles(.{
+        .files = &.{
+            "glfw-3.4/src/context.c",
+            "glfw-3.4/src/init.c",
+            "glfw-3.4/src/input.c",
+            "glfw-3.4/src/monitor.c",
+            "glfw-3.4/src/platform.c",
+            "glfw-3.4/src/vulkan.c",
+            "glfw-3.4/src/window.c",
+            "glfw-3.4/src/egl_context.c",
+            "glfw-3.4/src/osmesa_context.c",
+
+            "glfw-3.4/src/null_init.c",
+            "glfw-3.4/src/null_joystick.c",
+            "glfw-3.4/src/null_monitor.c",
+            "glfw-3.4/src/null_window.c",
+        },
+        .flags = if (target.query.os_tag == .windows) &.{ "-DWIN32", "-D_GLFW_WIN32", "-D_WINDOWS", "-DUNICODE", "-D_UNICODE" } else &.{},
+    });
+
+    if (target.query.os_tag == .linux) {
+        if (use_wayland) {
+            glfw.addCSourceFiles(.{
+                .files = &.{
+                    "glfw-3.4/src/wayland_init.c",
+                    "glfw-3.4/src/wayland_monitor.c",
+                    "glfw-3.4/src/wayland_window.c",
+                    "glfw-3.4/src/xkb_unicode.c",
+                    "glfw-3.4/src/posix_time.c",
+                    "glfw-3.4/src/posix_thread.c",
+                    "glfw-3.4/src/posix_poll.c",
+                    "glfw-3.4/src/linux_joystick.c",
+                    "glfw-3.4/src/egl_context.c",
+                },
+                .flags = &.{
+                    "-D_GLFW_WAYLAND",
+                    "-pthread",
+                },
+            });
+        } else {
+            glfw.addCSourceFiles(.{
+                .files = &.{
+                    "glfw-3.4/src/x11_init.c",
+                    "glfw-3.4/src/x11_monitor.c",
+                    "glfw-3.4/src/x11_window.c",
+                    "glfw-3.4/src/xkb_unicode.c",
+                    "glfw-3.4/src/posix_time.c",
+                    "glfw-3.4/src/posix_thread.c",
+                    "glfw-3.4/src/posix_poll.c",
+                    "glfw-3.4/src/linux_joystick.c",
+                    "glfw/src/glx_context.c",
+                },
+                .flags = &.{
+                    "-D_GLFW_X11",
+                    "-pthread",
+                },
+            });
+        }
+    }
+
+    if (target.query.os_tag == .windows) {
+        glfw.addCSourceFiles(.{
+            .files = &.{
+                "glfw-3.4/src/win32_init.c",
+                "glfw-3.4/src/win32_joystick.c",
+                "glfw-3.4/src/win32_module.c",
+                "glfw-3.4/src/win32_monitor.c",
+                "glfw-3.4/src/win32_thread.c",
+                "glfw-3.4/src/win32_time.c",
+                "glfw-3.4/src/win32_window.c",
+                "glfw-3.4/src/wgl_context.c",
+            },
+            .flags = &.{
+                "-DWIN32",
+                "-D_GLFW_WIN32",
+                "-D_WINDOWS",
+                "-DUNICODE",
+                "-D_UNICODE",
+            },
+        });
+    }
+
+    glfw.linkLibC();
+    if (target.query.os_tag == .windows) {
+        glfw.linkSystemLibrary("gdi32");
+    }
+
+    b.installArtifact(glfw);
+
+    var targets = std.ArrayList(*std.Build.Step.Compile).init(b.allocator);
+
+    if (mem.eql(u8, project_name, "01_hello_window")) {
+        const hello_window = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        hello_window.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        hello_window.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        hello_window.addCSourceFiles(.{
+            .files = &.{
+                "src/01_hello_window/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        hello_window.linkLibrary(glfw);
+        hello_window.linkLibCpp();
+
+        b.installArtifact(hello_window);
+
+        const run_cmd = b.addRunArtifact(hello_window);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+        
+        targets.append(hello_window) catch @panic("OOM");
+    }
+
+    // generate compile_commands.json (for clang)
+    _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
+}
