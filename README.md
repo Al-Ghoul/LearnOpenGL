@@ -29,3 +29,4 @@ Available targets:
 | `01_hello_window` (default) | A simple window with cleared background (Dark Slate Gray) |
 | `02_hello_triangle`         | A simple dark orange-ish triangle |
 | `02_hello_triangle_ebos`    | A simple dark orange-ish rectangle using element buffer objects (indexed drawing) |
+| `02_hello_triangle_ex1`     | Two triangles on different positions |
