@@ -26,4 +26,5 @@ where `<target>` is the name of the target mapped to the build target it build.z
 Available targets:
 | Target | Description |
 | --- | --- |
-| `01_hello_window` (default) | A simple window |
+| `01_hello_window` (default) | A simple window with cleared background (Dark Slate Gray) |
+| `02_hello_triangle`         | A simple dark orange-ish triangle |
