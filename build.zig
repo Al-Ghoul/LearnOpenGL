@@ -132,7 +132,7 @@ pub fn build(b: *std.Build) void {
         const run_step = b.step("run", "Run the app");
         run_step.dependOn(&run_cmd.step);
 
-        targets.append(hello_window) catch @panic("OOM");
+        targets.append(hello_window) catch @panic("OOM"); // used once, not necessary to add other projects
     }
 
     if (mem.eql(u8, project_name, "02_hello_triangle")) {
@@ -158,10 +158,32 @@ pub fn build(b: *std.Build) void {
         const run_cmd = b.addRunArtifact(hello_triangle);
         const run_step = b.step("run", "Run the app");
         run_step.dependOn(&run_cmd.step);
-
-        targets.append(hello_triangle) catch @panic("OOM");
     }
-    
+
+    if (mem.eql(u8, project_name, "02_hello_triangle_ebos")) {
+        const hello_triangle_ebos = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        hello_triangle_ebos.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        hello_triangle_ebos.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        hello_triangle_ebos.addCSourceFiles(.{
+            .files = &.{
+                "src/02_hello_triangle_EBOs/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        hello_triangle_ebos.linkLibrary(glfw);
+        hello_triangle_ebos.linkLibCpp();
+
+        b.installArtifact(hello_triangle_ebos);
+
+        const run_cmd = b.addRunArtifact(hello_triangle_ebos);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+    }
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
