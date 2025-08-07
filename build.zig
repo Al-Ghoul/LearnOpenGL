@@ -146,7 +146,7 @@ pub fn build(b: *std.Build) void {
         hello_triangle.addIncludePath(.{ .cwd_relative = "./glad/include/" });
         hello_triangle.addCSourceFiles(.{
             .files = &.{
-                "src/01_hello_triangle/main.cxx",
+                "src/02_hello_triangle/main.cxx",
                 "glad/src/glad.c",
             },
         });
