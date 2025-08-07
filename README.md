@@ -30,3 +30,4 @@ Available targets:
 | `02_hello_triangle`         | A simple dark orange-ish triangle |
 | `02_hello_triangle_ebos`    | A simple dark orange-ish rectangle using element buffer objects (indexed drawing) |
 | `02_hello_triangle_ex1`     | Two triangles on different positions |
+| `02_hello_triangle_ex2`     | Two triangles on different positions using different VBOs and VAOs |
