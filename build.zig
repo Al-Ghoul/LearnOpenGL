@@ -131,10 +131,37 @@ pub fn build(b: *std.Build) void {
         const run_cmd = b.addRunArtifact(hello_window);
         const run_step = b.step("run", "Run the app");
         run_step.dependOn(&run_cmd.step);
-        
+
         targets.append(hello_window) catch @panic("OOM");
     }
 
+    if (mem.eql(u8, project_name, "02_hello_triangle")) {
+        const hello_triangle = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        hello_triangle.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        hello_triangle.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        hello_triangle.addCSourceFiles(.{
+            .files = &.{
+                "src/01_hello_triangle/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        hello_triangle.linkLibrary(glfw);
+        hello_triangle.linkLibCpp();
+
+        b.installArtifact(hello_triangle);
+
+        const run_cmd = b.addRunArtifact(hello_triangle);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(hello_triangle) catch @panic("OOM");
+    }
+    
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
