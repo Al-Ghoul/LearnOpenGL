@@ -483,7 +483,7 @@ pub fn build(b: *std.Build) void {
 
         targets.append(textures_exercise_2) catch @panic("OOM");
     }
-    
+
     if (mem.eql(u8, project_name, "05_transformations")) {
         const transformations = b.addExecutable(.{
             .name = "LearnOpenGL",
@@ -510,6 +510,34 @@ pub fn build(b: *std.Build) void {
         run_step.dependOn(&run_cmd.step);
 
         targets.append(transformations) catch @panic("OOM");
+    }
+
+    if (mem.eql(u8, project_name, "05_transformations_ex1")) {
+        const transformations_ex1 = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        transformations_ex1.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        transformations_ex1.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        transformations_ex1.addIncludePath(.{ .cwd_relative = "./include/" });
+        transformations_ex1.addCSourceFiles(.{
+            .files = &.{
+                "src/05_transformations_ex1/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        transformations_ex1.linkLibrary(glfw);
+        transformations_ex1.linkLibCpp();
+
+        b.installArtifact(transformations_ex1);
+
+        const run_cmd = b.addRunArtifact(transformations_ex1);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(transformations_ex1) catch @panic("OOM");
     }
 
     // generate compile_commands.json (for clang)
