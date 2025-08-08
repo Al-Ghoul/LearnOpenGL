@@ -33,5 +33,6 @@ Available targets:
 | `02_hello_triangle_ex2`     | Two triangles on different positions using different VBOs and VAOs |
 | `02_hello_triangle_ex3`     | Two triangles on different positions using different VBOs and VAOs and different shaders |
 | `03_shaders`     | A simple shader example | Requires you to run `zig build cdb -Dproject=03_shaders` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+| `03_shaders_ex1`     | A flipped triangle shader example | Requires you to run `zig build cdb -Dproject=03_shaders_ex1` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 
 
