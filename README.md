@@ -40,5 +40,6 @@ Available targets:
 | `04_textures_ex1`     | A flipped texture (using the vertex shader) example | Requires you to run `zig build cdb -Dproject=04_textures_ex1` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `04_textures_ex2`     | A clamped texture (using the vertex shader) example | Requires you to run `zig build cdb -Dproject=04_textures_ex2` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `05_transformations`     | A simple transformations example | Requires you to run `zig build cdb -Dproject=05_transformations` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+| `05_transformations_ex1`     | A transformations example with two containers rotating & scaling | Requires you to run `zig build cdb -Dproject=05_transformations_ex1` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 
 
