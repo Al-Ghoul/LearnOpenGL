@@ -24,11 +24,14 @@ Each tutorial has its own dedicated build target and you can run them by running
 where `<target>` is the name of the target mapped to the build target it build.zig file.
 
 Available targets:
-| Target | Description |
-| --- | --- |
+| Target | Description | Extra step |
+| --- | --- | --- |
 | `01_hello_window` (default) | A simple window with cleared background (Dark Slate Gray) |
 | `02_hello_triangle`         | A simple dark orange-ish triangle |
 | `02_hello_triangle_ebos`    | A simple dark orange-ish rectangle using element buffer objects (indexed drawing) |
 | `02_hello_triangle_ex1`     | Two triangles on different positions |
 | `02_hello_triangle_ex2`     | Two triangles on different positions using different VBOs and VAOs |
 | `02_hello_triangle_ex3`     | Two triangles on different positions using different VBOs and VAOs and different shaders |
+| `03_shaders`     | A simple shader example | Requires you to run `zig build cdb -Dproject=03_shaders` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+
+
