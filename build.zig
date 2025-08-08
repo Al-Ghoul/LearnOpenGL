@@ -234,7 +234,7 @@ pub fn build(b: *std.Build) void {
         const run_step = b.step("run", "Run the app");
         run_step.dependOn(&run_cmd.step);
     }
-    
+
     if (mem.eql(u8, project_name, "02_hello_triangle_ex3")) {
         const hello_triangle_exercise_3 = b.addExecutable(.{
             .name = "LearnOpenGL",
@@ -259,7 +259,7 @@ pub fn build(b: *std.Build) void {
         const run_step = b.step("run", "Run the app");
         run_step.dependOn(&run_cmd.step);
     }
-    
+
     if (mem.eql(u8, project_name, "03_shaders")) {
         const shaders = b.addExecutable(.{
             .name = "LearnOpenGL",
@@ -287,7 +287,7 @@ pub fn build(b: *std.Build) void {
 
         targets.append(shaders) catch @panic("OOM");
     }
-    
+
     if (mem.eql(u8, project_name, "03_shaders_ex1")) {
         const shaders_exercise_1 = b.addExecutable(.{
             .name = "LearnOpenGL",
@@ -315,7 +315,7 @@ pub fn build(b: *std.Build) void {
 
         targets.append(shaders_exercise_1) catch @panic("OOM");
     }
-    
+
     if (mem.eql(u8, project_name, "03_shaders_ex2")) {
         const shaders_exercise_2 = b.addExecutable(.{
             .name = "LearnOpenGL",
@@ -370,8 +370,8 @@ pub fn build(b: *std.Build) void {
         run_step.dependOn(&run_cmd.step);
 
         targets.append(shaders_exercise_3) catch @panic("OOM");
-    } 
-    
+    }
+
     if (mem.eql(u8, project_name, "04_textures")) {
         const textures = b.addExecutable(.{
             .name = "LearnOpenGL",
@@ -398,8 +398,8 @@ pub fn build(b: *std.Build) void {
         run_step.dependOn(&run_cmd.step);
 
         targets.append(textures) catch @panic("OOM");
-    } 
-     
+    }
+
     if (mem.eql(u8, project_name, "04_textures_ex1")) {
         const textures_exercise_1 = b.addExecutable(.{
             .name = "LearnOpenGL",
@@ -426,6 +426,34 @@ pub fn build(b: *std.Build) void {
         run_step.dependOn(&run_cmd.step);
 
         targets.append(textures_exercise_1) catch @panic("OOM");
+    }
+
+    if (mem.eql(u8, project_name, "04_textures_ex2")) {
+        const textures_exercise_2 = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        textures_exercise_2.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        textures_exercise_2.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        textures_exercise_2.addIncludePath(.{ .cwd_relative = "./include/" });
+        textures_exercise_2.addCSourceFiles(.{
+            .files = &.{
+                "src/04_textures_ex2/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        textures_exercise_2.linkLibrary(glfw);
+        textures_exercise_2.linkLibCpp();
+
+        b.installArtifact(textures_exercise_2);
+
+        const run_cmd = b.addRunArtifact(textures_exercise_2);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(textures_exercise_2) catch @panic("OOM");
     }
 
     // generate compile_commands.json (for clang)
