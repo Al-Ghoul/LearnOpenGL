@@ -35,5 +35,6 @@ Available targets:
 | `03_shaders`     | A simple shader example | Requires you to run `zig build cdb -Dproject=03_shaders` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `03_shaders_ex1`     | A flipped triangle shader example | Requires you to run `zig build cdb -Dproject=03_shaders_ex1` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `03_shaders_ex2`     | A triangle positioned to right side of the screen with an offset provided by the vertex shader | Requires you to run `zig build cdb -Dproject=03_shaders_ex1` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+| `03_shaders_ex3`     | A triangle colored by passing its position from the vertex shader to the fragment shader | Requires you to run `zig build cdb -Dproject=03_shaders_ex1` to update the `compile_commands.json` file to detect the shader.h include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 
 
