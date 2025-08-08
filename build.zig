@@ -260,6 +260,34 @@ pub fn build(b: *std.Build) void {
         run_step.dependOn(&run_cmd.step);
     }
     
+    if (mem.eql(u8, project_name, "03_shaders")) {
+        const shaders = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        shaders.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        shaders.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        shaders.addIncludePath(.{ .cwd_relative = "./include/" });
+        shaders.addCSourceFiles(.{
+            .files = &.{
+                "src/03_shaders/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        shaders.linkLibrary(glfw);
+        shaders.linkLibCpp();
+
+        b.installArtifact(shaders);
+
+        const run_cmd = b.addRunArtifact(shaders);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(shaders) catch @panic("OOM");
+    }
+     
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
