@@ -400,6 +400,34 @@ pub fn build(b: *std.Build) void {
         targets.append(textures) catch @panic("OOM");
     } 
      
+    if (mem.eql(u8, project_name, "04_textures_ex1")) {
+        const textures_exercise_1 = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        textures_exercise_1.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        textures_exercise_1.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        textures_exercise_1.addIncludePath(.{ .cwd_relative = "./include/" });
+        textures_exercise_1.addCSourceFiles(.{
+            .files = &.{
+                "src/04_textures_ex1/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        textures_exercise_1.linkLibrary(glfw);
+        textures_exercise_1.linkLibCpp();
+
+        b.installArtifact(textures_exercise_1);
+
+        const run_cmd = b.addRunArtifact(textures_exercise_1);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(textures_exercise_1) catch @panic("OOM");
+    }
+
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
