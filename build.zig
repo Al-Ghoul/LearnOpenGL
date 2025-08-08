@@ -456,6 +456,62 @@ pub fn build(b: *std.Build) void {
         targets.append(textures_exercise_2) catch @panic("OOM");
     }
 
+    if (mem.eql(u8, project_name, "04_textures_ex2")) {
+        const textures_exercise_2 = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        textures_exercise_2.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        textures_exercise_2.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        textures_exercise_2.addIncludePath(.{ .cwd_relative = "./include/" });
+        textures_exercise_2.addCSourceFiles(.{
+            .files = &.{
+                "src/04_textures_ex2/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        textures_exercise_2.linkLibrary(glfw);
+        textures_exercise_2.linkLibCpp();
+
+        b.installArtifact(textures_exercise_2);
+
+        const run_cmd = b.addRunArtifact(textures_exercise_2);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(textures_exercise_2) catch @panic("OOM");
+    }
+    
+    if (mem.eql(u8, project_name, "05_transformations")) {
+        const transformations = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        transformations.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        transformations.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        transformations.addIncludePath(.{ .cwd_relative = "./include/" });
+        transformations.addCSourceFiles(.{
+            .files = &.{
+                "src/05_transformations/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        transformations.linkLibrary(glfw);
+        transformations.linkLibCpp();
+
+        b.installArtifact(transformations);
+
+        const run_cmd = b.addRunArtifact(transformations);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(transformations) catch @panic("OOM");
+    }
+
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
