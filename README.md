@@ -44,5 +44,6 @@ Available targets:
 | `06_coordinate_systems`     | A coordinate systems transformations example | Requires you to run `zig build cdb -Dproject=06_coordinate_systems` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `06_coordinate_systems_ex1`     | A coordinate systems transformations example that rotates every 3rd cube overtime | Requires you to run `zig build cdb -Dproject=06_coordinate_systems_ex1` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `07_camera`     | A camera example with rotation, zoom and movement | Requires you to run `zig build cdb -Dproject=07_camera` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+| `08_colors`     | A very basic lighting set up & example | Requires you to run `zig build cdb -Dproject=08_colors` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 
 
