@@ -540,6 +540,34 @@ pub fn build(b: *std.Build) void {
         targets.append(transformations_ex1) catch @panic("OOM");
     }
 
+    if (mem.eql(u8, project_name, "06_coordinate_systems")) {
+        const coordinate_systems = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        coordinate_systems.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        coordinate_systems.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        coordinate_systems.addIncludePath(.{ .cwd_relative = "./include/" });
+        coordinate_systems.addCSourceFiles(.{
+            .files = &.{
+                "src/06_coordinate_systems/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        coordinate_systems.linkLibrary(glfw);
+        coordinate_systems.linkLibCpp();
+
+        b.installArtifact(coordinate_systems);
+
+        const run_cmd = b.addRunArtifact(coordinate_systems);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(coordinate_systems) catch @panic("OOM");
+    }
+
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
