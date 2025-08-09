@@ -569,31 +569,59 @@ pub fn build(b: *std.Build) void {
     }
 
     if (mem.eql(u8, project_name, "06_coordinate_systems_ex1")) {
-        const coordinate_systems = b.addExecutable(.{
+        const coordinate_systems_ex1 = b.addExecutable(.{
             .name = "LearnOpenGL",
             .optimize = optimize,
             .target = target,
         });
 
-        coordinate_systems.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
-        coordinate_systems.addIncludePath(.{ .cwd_relative = "./glad/include/" });
-        coordinate_systems.addIncludePath(.{ .cwd_relative = "./include/" });
-        coordinate_systems.addCSourceFiles(.{
+        coordinate_systems_ex1.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        coordinate_systems_ex1.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        coordinate_systems_ex1.addIncludePath(.{ .cwd_relative = "./include/" });
+        coordinate_systems_ex1.addCSourceFiles(.{
             .files = &.{
                 "src/06_coordinate_systems_ex1/main.cxx",
                 "glad/src/glad.c",
             },
         });
-        coordinate_systems.linkLibrary(glfw);
-        coordinate_systems.linkLibCpp();
+        coordinate_systems_ex1.linkLibrary(glfw);
+        coordinate_systems_ex1.linkLibCpp();
 
-        b.installArtifact(coordinate_systems);
+        b.installArtifact(coordinate_systems_ex1);
 
-        const run_cmd = b.addRunArtifact(coordinate_systems);
+        const run_cmd = b.addRunArtifact(coordinate_systems_ex1);
         const run_step = b.step("run", "Run the app");
         run_step.dependOn(&run_cmd.step);
 
-        targets.append(coordinate_systems) catch @panic("OOM");
+        targets.append(coordinate_systems_ex1) catch @panic("OOM");
+    }
+
+    if (mem.eql(u8, project_name, "07_camera")) {
+        const camera = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        camera.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        camera.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        camera.addIncludePath(.{ .cwd_relative = "./include/" });
+        camera.addCSourceFiles(.{
+            .files = &.{
+                "src/07_camera/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        camera.linkLibrary(glfw);
+        camera.linkLibCpp();
+
+        b.installArtifact(camera);
+
+        const run_cmd = b.addRunArtifact(camera);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(camera) catch @panic("OOM");
     }
 
     // generate compile_commands.json (for clang)
