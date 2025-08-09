@@ -624,6 +624,34 @@ pub fn build(b: *std.Build) void {
         targets.append(camera) catch @panic("OOM");
     }
 
+    if (mem.eql(u8, project_name, "08_colors")) {
+        const colors = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        colors.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        colors.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        colors.addIncludePath(.{ .cwd_relative = "./include/" });
+        colors.addCSourceFiles(.{
+            .files = &.{
+                "src/08_colors/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        colors.linkLibrary(glfw);
+        colors.linkLibCpp();
+
+        b.installArtifact(colors);
+
+        const run_cmd = b.addRunArtifact(colors);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(colors) catch @panic("OOM");
+    }
+    
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
