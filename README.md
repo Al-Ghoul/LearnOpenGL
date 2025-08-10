@@ -46,5 +46,6 @@ Available targets:
 | `07_camera`     | A camera example with rotation, zoom and movement | Requires you to run `zig build cdb -Dproject=07_camera` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `08_colors`     | A very basic lighting set up & example | Requires you to run `zig build cdb -Dproject=08_colors` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `09_basic_lighting`     | A phong lighting (ambient, diffuse & specular) model example | Requires you to run `zig build cdb -Dproject=09_basic_lighting` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+| `10_materials`     | A phong lighting (ambient, diffuse & specular) model example with materials (Lights & Materials uniforms/attributes) | Requires you to run `zig build cdb -Dproject=10_materials` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 
 
