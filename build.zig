@@ -763,6 +763,35 @@ pub fn build(b: *std.Build) void {
 
         targets.append(light_casters) catch @panic("OOM");
     }
+
+    if (mem.eql(u8, project_name, "13_multiple_lights")) {
+        const multiple_lights = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        multiple_lights.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        multiple_lights.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        multiple_lights.addIncludePath(.{ .cwd_relative = "./include/" });
+        multiple_lights.addCSourceFiles(.{
+            .files = &.{
+                "src/13_multiple_lights/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        multiple_lights.linkLibrary(glfw);
+        multiple_lights.linkLibCpp();
+
+        b.installArtifact(multiple_lights);
+
+        const run_cmd = b.addRunArtifact(multiple_lights);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(multiple_lights) catch @panic("OOM");
+    }
+
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
