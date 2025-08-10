@@ -651,8 +651,8 @@ pub fn build(b: *std.Build) void {
 
         targets.append(colors) catch @panic("OOM");
     }
-    
-   if (mem.eql(u8, project_name, "09_basic_lighting")) {
+
+    if (mem.eql(u8, project_name, "09_basic_lighting")) {
         const basic_lighting = b.addExecutable(.{
             .name = "LearnOpenGL",
             .optimize = optimize,
@@ -679,7 +679,35 @@ pub fn build(b: *std.Build) void {
 
         targets.append(basic_lighting) catch @panic("OOM");
     }
- 
+
+    if (mem.eql(u8, project_name, "10_materials")) {
+        const materials = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+
+        materials.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        materials.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        materials.addIncludePath(.{ .cwd_relative = "./include/" });
+        materials.addCSourceFiles(.{
+            .files = &.{
+                "src/10_materials/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        materials.linkLibrary(glfw);
+        materials.linkLibCpp();
+
+        b.installArtifact(materials);
+
+        const run_cmd = b.addRunArtifact(materials);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        targets.append(materials) catch @panic("OOM");
+    }
+    
     // generate compile_commands.json (for clang)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
