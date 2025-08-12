@@ -54,5 +54,6 @@ Available targets:
 | `15_depth_testing`     | A depth testing/z-fighting example | Requires you to run `zig build cdb -Dproject=15_depth_testing` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `16_stencil_testing`     | A stencil testing (masking a container and/or drawing a border around it) example | Requires you to run `zig build cdb -Dproject=16_stencil_testing` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `17_blending`     | A blending (texel/pixel discarding and transparency) example | Requires you to run `zig build cdb -Dproject=17_blending` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+| `18_face_culling`     | A face culling example | Requires you to run `zig build cdb -Dproject=18_face_culling` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 
 
