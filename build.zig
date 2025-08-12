@@ -957,6 +957,35 @@ pub fn build(b: *std.Build) !void {
         targets.append(model) catch @panic("OOM");
     }
 
+    if (mem.eql(u8, project_name, "15_depth_testing")) {
+        const depth_testing = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+        depth_testing.addIncludePath(assimp.path("include"));
+        depth_testing.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        depth_testing.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        depth_testing.addIncludePath(.{ .cwd_relative = "./include/" });
+        depth_testing.addCSourceFiles(.{
+            .files = &.{
+                "src/15_depth_testing/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        depth_testing.linkLibrary(lib);
+        depth_testing.linkLibrary(glfw);
+        depth_testing.linkLibCpp();
+
+        const run_cmd = b.addRunArtifact(depth_testing);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        b.installArtifact(depth_testing);
+
+        targets.append(depth_testing) catch @panic("OOM");
+    }
+
     // generate compile_commands.json (for clangd)
     _ = zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
 }
