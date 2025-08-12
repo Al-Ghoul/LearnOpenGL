@@ -973,7 +973,6 @@ pub fn build(b: *std.Build) !void {
                 "glad/src/glad.c",
             },
         });
-        depth_testing.linkLibrary(lib);
         depth_testing.linkLibrary(glfw);
         depth_testing.linkLibCpp();
 
@@ -1002,7 +1001,6 @@ pub fn build(b: *std.Build) !void {
                 "glad/src/glad.c",
             },
         });
-        stencil_testing.linkLibrary(lib);
         stencil_testing.linkLibrary(glfw);
         stencil_testing.linkLibCpp();
 
@@ -1013,6 +1011,34 @@ pub fn build(b: *std.Build) !void {
         b.installArtifact(stencil_testing);
 
         targets.append(stencil_testing) catch @panic("OOM");
+    }
+
+    if (mem.eql(u8, project_name, "17_blending")) {
+        const blending = b.addExecutable(.{
+            .name = "LearnOpenGL",
+            .optimize = optimize,
+            .target = target,
+        });
+        blending.addIncludePath(assimp.path("include"));
+        blending.addIncludePath(.{ .cwd_relative = "./glfw-3.4/include/" });
+        blending.addIncludePath(.{ .cwd_relative = "./glad/include/" });
+        blending.addIncludePath(.{ .cwd_relative = "./include/" });
+        blending.addCSourceFiles(.{
+            .files = &.{
+                "src/17_blending/main.cxx",
+                "glad/src/glad.c",
+            },
+        });
+        blending.linkLibrary(glfw);
+        blending.linkLibCpp();
+
+        const run_cmd = b.addRunArtifact(blending);
+        const run_step = b.step("run", "Run the app");
+        run_step.dependOn(&run_cmd.step);
+
+        b.installArtifact(blending);
+
+        targets.append(blending) catch @panic("OOM");
     }
 
     // generate compile_commands.json (for clangd)
