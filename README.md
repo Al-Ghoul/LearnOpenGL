@@ -50,5 +50,6 @@ Available targets:
 | `11_lighting_maps`     | A lighting maps (ambient & diffuse) example | Requires you to run `zig build cdb -Dproject=11_lighting_maps` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `12_light_casters`     | A light casters (directional, point & spot lights) example | Requires you to run `zig build cdb -Dproject=12_light_casters` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `13_multiple_lights`     | A multiple lights shaders calculations (directional, point & spot lights) example | Requires you to run `zig build cdb -Dproject=13_multiple_lights` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+| `14_model`     | A model loading example | Requires you to run `zig build cdb -Dproject=14_model` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 
 
