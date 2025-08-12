@@ -52,5 +52,6 @@ Available targets:
 | `13_multiple_lights`     | A multiple lights shaders calculations (directional, point & spot lights) example | Requires you to run `zig build cdb -Dproject=13_multiple_lights` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `14_model`     | A model loading example | Requires you to run `zig build cdb -Dproject=14_model` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 | `15_depth_testing`     | A depth testing/z-fighting example | Requires you to run `zig build cdb -Dproject=15_depth_testing` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
+| `16_stencil_testing`     | A stencil testing (masking a container and/or drawing a border around it) example | Requires you to run `zig build cdb -Dproject=16_stencil_testing` to update the `compile_commands.json` file to detect the shader.h & GLM's include path (if u are using neovim or vscode instead of vs (along with clangd)) |
 
 
